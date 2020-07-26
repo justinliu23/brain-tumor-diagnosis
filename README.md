@@ -1,2 +1,1 @@
-# disease spread modeling
- 
+# IgniteMinds Modeling Disease Spread With Python
