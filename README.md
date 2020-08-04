@@ -1,1 +1,1 @@
-# IgniteMinds Modeling Disease Spread With Python
+# IgniteMinds Tumor Diagnosis Research Project
