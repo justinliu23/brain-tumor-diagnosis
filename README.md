@@ -1,1 +1,1 @@
-# IgniteMinds Tumor Diagnosis Research Project
+# IgniteMinds Research: Brain Tumor Diagnosis
