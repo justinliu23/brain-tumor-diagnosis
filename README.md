@@ -1,2 +1,1 @@
-# disease spread modeling
- 
+# IgniteMinds Research: Brain Tumor Diagnosis
