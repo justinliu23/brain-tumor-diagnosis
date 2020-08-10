@@ -1,59 +1,126 @@
-import numpy as np
-import pandas as pd
+# import numpy as np
+# import pandas as pd
 import os
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.preprocessing import image, ImageDataGenerator
-from tensorflow.python.keras.models import Sequential, Model
-from tensorflow.python.keras.layers import Dense, Flatten, Conv2D, Dropout, GlobalAveragePooling2D
+# import tensorflow as tf
+# from tensorflow import keras
+# from tensorflow.keras.preprocessing import image, ImageDataGenerator
+# from tensorflow.keras.models import Sequential, Model
+# from tensorflow.keras.layers import Dense, Flatten, Conv2D, Dropout, GlobalAveragePooling2D
 # from keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 # import matplotlib.pyplot as plt
 # import matplotlib.image as mpimg
 
-trainpath = os.path.dirname('/content/train/lung_colon_image_set')
-main_path_string = '/content/train/lung_colon_image_set/lung_image_sets/'
-main_path = os.path.dirname(main_path_string)
 
-# Generate paths from root into each type of tumor
-glioma_path = os.path.join(main_path, '')
-meningioma_path = os.path.join(main_path, '')
-pituitary_path = os.path.join(main_path, '')
-normal_path = os.path.join(main_path, '')
+# Generate path from root into lung image folder
+# training_path = os.path.dirname(r'\brain_tumor_image_set\training\')
+training_path = os.path.dirname(r'C:\Users\justi\OneDrive\Documents\Software\Python\PycharmProjects\IgniteMinds'
+                                r'\brain_tumor_diagnosis\brain_tumor_image_set\training\\')
 
-def preprocess_data(directory_list, image_size):
-    X = []
-    y = []
-    image_width, image_height = image_size
+# Generate paths from root into each type of cancer.
+glioma_tumor_path = os.path.join(training_path, r'glioma_tumor')
+meningioma_tumor_path = os.path.join(training_path, r'meningioma_tumor')
+pituitary_tumor_path = os.path.join(training_path, r'pituitary_tumor')
+normal_path = os.path.join(training_path, r'normal')
 
-    for directory in directory_list:
-        for filename in directory_list(directory):
-            # Load the image
-            image = cv2.imread(directory + '\\' + filename)
-            # crop the brain and ignore the unnecessary rest part of the image
-            # image = crop_brain_contour(image, plot=False)
-            # resize image
-            # image = cv2.resize(image, dsize=(image_width, image_height), interpolation=cv2.INTER_CUBIC)
-            # normalize values
-            image /= 255.
-            # convert image to numpy array and append it to X
-            X.append(image)
-            # append a value of 1 to the target array if the image
-            # is in the folder named 'yes', otherwise append 0.
-            if directory[-3:] == 'yes':
-                y.append([1])
-            else:
-                y.append([0])
+# print(glioma_tumor_path)
 
-    X = np.array(X)
-    y = np.array(y)
 
-    # Shuffle the data
-    X, y = shuffle(X, y)
+# Returns all file paths within a directory.
+def get_tumor_paths(my_directory):
+    file_paths = []
 
-    print(f'Number of examples is: {len(X)}')
-    print(f'X shape is: {X.shape}')
-    print(f'y shape is: {y.shape}')
+    for folder, subs, files in os.walk(my_directory):
+        for filename in files:
+            file_paths.append(os.path.abspath(os.path.join(folder, filename)))
 
-    return X, y
+    # for i in file_paths:
+    #     print(i)
 
-def predict_tumor():
+    return file_paths
+
+glioma = get_tumor_paths(glioma_tumor_path)
+meningioma = get_tumor_paths(meningioma_tumor_path)
+pituitary = get_tumor_paths(pituitary_tumor_path)
+normal = get_tumor_paths(normal_path)
+#
+# for i in glioma:
+#     print(i)
+
+
+# Generate Dataframes
+# adeno = list(zip(adenocarc, ['adenocarc']*len(adenocarc)))
+# adeno_df = pd.DataFrame(adeno, columns=['file', 'label'])
+# print(adeno_df.head())
+#
+# norm = list(zip(normal, ['normal']*len(normal)))
+# normal_df = pd.DataFrame(norm, columns=['file', 'label'])
+# print(normal_df.head())
+#
+# squamouscarcinoma=list(zip(squamouscarcinoma, ['squamous']*len(squamouscarcinoma)*2))
+# squamous_df = pd.DataFrame(squamouscarcinoma, columns=['file', 'label'])
+# print(squamous_df.head())
+
+# Combine into one dataframe
+# dataframe=pd.concat([adeno_df, normal_df, squamous_df])
+# dataframe.sample(5)
+
+# Convert to style for data_gen
+# df = pd.get_dummies(dataframe['label'])
+# df=pd.concat([dataframe, df], axis=1)
+# df.sample(5)
+
+# Create the generator
+# from ImageDataAugmentor.image_data_augmentor import *
+# data_gen= ImageDataAugmentor(rescale = 1/255.)
+
+# Split into training and test
+# img_shape = 300
+# batch_size = 100
+# length = len(df)
+# train_df = df.iloc[0:int(length*0.8), :]
+# test_df = df.iloc[int(length*0.8):int(length), :]
+# train_generator=data_gen.flow_from_dataframe(train_df,
+#                                              target_size = (img_shape, img_shape),
+#                                              x_col = 'file',
+#                                              y_col = ['glioma', 'meningioma', 'pituitary', 'normal'],
+#                                              class_mode = 'raw',
+#                                              shuffle=True,
+#                                              batch_size = batch_size)
+# test_generator=data_gen.flow_from_dataframe(test_df,
+#                                              target_size = (img_shape, img_shape),
+#                                              x_col = 'file',
+#                                              y_col = ['glioma', 'meningioma', 'pituitary', 'normal'],
+#                                              class_mode = 'raw',
+#                                            shuffle=False,
+#                                              batch_size = batch_size)
+
+# Preview the MRI Scans?
+
+
+# Create a CNN
+# model = Sequential()
+# model.add(Conv2D(input_shape=(img_rows, img_cols, 3),
+#                  filters = 4,
+#                  kernel_size = 3,
+#                  activation = 'relu'))
+# model.add(Dropout(0.2))
+# model.add(Conv2D(20, kernel_size=(3, 3), strides = 2, activation='relu'))
+# model.add(Dropout(0.2))
+# model.add(Flatten())
+# model.add(Dense(128, activation='relu'))
+# model.add(Dense(num_classes, activation='softmax'))
+#
+# model.compile(loss='categorical_crossentropy',
+#               optimizer='adam',
+#               metrics=['accuracy'])
+
+
+# Train and fit the model
+# model.fit(train_generator,
+#           epochs = 5,
+#           steps_per_epoch = train_generator,
+#           validation_data = test_generator)
+
+
+# Evaluate image and predictions?
+# model.predict()
