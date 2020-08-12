@@ -47,27 +47,20 @@ test_generator = test_data_gen.flow_from_directory(
 # Create a model
 def create_model():
     model = Sequential()
-    model.add(Conv2D(32, (3, 3), activation = 'relu', input_shape = input_shape))
-    model.add(Conv2D(32, (3, 3), activation = 'relu'))
-    model.add(Flatten())
-    model.add(Dense(32, activation = 'relu'))
-    model.add(Dropout(0.2))
-    model.add(Dense(32, activation = 'softmax'))
 
-    model = Sequential([
-    data_augmentation,
-    layers.experimental.preprocessing.Rescaling(1./255),
-    layers.Conv2D(16, 3, padding='same', activation='relu'),
-    layers.MaxPooling2D(),
-    layers.Conv2D(32, 3, padding='same', activation='relu'),
-    layers.MaxPooling2D(),
-    layers.Conv2D(64, 3, padding='same', activation='relu'),
-    layers.MaxPooling2D(),
-    layers.Dropout(0.2),
-    layers.Flatten(),
-    layers.Dense(128, activation='relu'),
-    layers.Dense(num_classes)
-    ])
+    model.add(Conv2D(32, (3, 3), activation = 'relu', input_shape = input_shape))
+    model.add(MaxPooling2D(pool_size = (2, 2)))
+
+    model.add(Conv2D(32, (3, 3), activation = 'relu'))
+    model.add(MaxPooling2D(pool_size = (2, 2)))
+
+    model.add(Conv2D(64, (3, 3), activation = 'relu'))
+    model.add(MaxPooling2D(pool_size = (2, 2)))
+
+    model.add(Flatten())
+    model.add(Dense(64, activation = 'relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(4, activation = 'softmax'))
 
     return model
 
@@ -141,6 +134,7 @@ def predict_image(model):
 
 
 model = create_model()
+print_model_summary(model)
 compile_model(model)
 fit_model(model)
 # print_model_summary(model)
