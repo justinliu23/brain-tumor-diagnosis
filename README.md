@@ -1,3 +1,3 @@
-# IgniteMinds Research: Comparing the Classification of Brain Tumors using Different Convolutional Neural Networks
+# Comparison of Convolutional Neural Network Architectures for MRI Classification of Brain Tumors
 
-View the publication in [YSJ's Issue 23](https://23.ysjournal.com/)
+View the paper [here](https://docs.google.com/document/d/1zOtaHVUmCgNT52QRbGoeiYJOJJDBPvAvHOqiJQ3uilM/edit?usp=sharing).
